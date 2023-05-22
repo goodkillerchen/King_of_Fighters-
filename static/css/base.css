@@ -1,0 +1,7 @@
+#kof {
+    width: 1280px;
+    height: 720px;
+    background-image: url('../images/backgourd/0.gif');
+    background-size: 200% 100%;
+    background-position: center;
+}

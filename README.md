@@ -1,2 +1,2 @@
 # King_of_Fighters-
-kong of fighters write by html, css, js
+king of fighters write by html, css, js
