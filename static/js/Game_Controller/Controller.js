@@ -1,16 +1,16 @@
+//the class for controller of the game
 class Controller{
     constructor($canvas){
         this.$canvas = $canvas;
-        this.Controller_li = new Set();
+        this.controller_li = new Set();
         this.start()
     }
     start(){
         this.$canvas.keydown( (e) => { 
-            this.Controller_li.add(e);
+            this.controller_li.add(e.key);
         });
-        this.$canvas.keyup((e) => { 
-            console.log(this)
-            this.Controller_li.delete(e);
+        this.$canvas.keyup( (e) => { 
+            this.controller_li.delete(e.key);
         });
     }
 }
