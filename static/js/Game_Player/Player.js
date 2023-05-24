@@ -18,7 +18,7 @@ class Player extends GameObject{
 
         
 
-        this.status = 0;
+        this.status = 0; //0: idel, 1: forward, 2: backward, 3: jump, 4: attack, 5: be attacked, 6: die
         
         this.v_X = 400;
         this.v_Y = -1000;
@@ -31,10 +31,69 @@ class Player extends GameObject{
         this.pressedKeys = this.root.gameMap.controller.controller_li;
 
         this.frameCurrentCnt = 0;
+
+        this.hp = 100;
     }
     start(){
 
     }
+
+    isCollision(blockA, blockB){
+        if(Math.max(blockA.x1, blockB.x1) > Math.min(blockA.x2, blockB.x2)){
+            return false;
+        }
+        if(Math.max(blockA.y1, blockB.y1) > Math.min(blockA.y2, blockB.y2)){
+            return false;
+        }
+        return true;
+    }
+
+    isAttackedStatus(){
+        if(this.status === 6){
+            return; 
+        }
+        this.status = 5;
+        this.frameCurrentCnt = 0;
+        this.hp = Math.max(this.hp - 20, 0);
+        console.log(this.hp)
+        if(this.hp <= 0){
+            this.status = 6;  
+        }
+    }
+
+    updateAttack(){
+        if(this.status === 4 && this.frameCurrentCnt == 18){
+            let other = this.root.players[1 - this.id];
+            let r1, r2;
+            if(this.direction > 0){
+                r1 = {
+                    x1: this.posX + this.width,
+                    y1: this.posY + 45,
+                    x2: this.posX + this.width + 100,
+                    y2: this.posY + 45 + 20
+                }
+            }
+            else{
+                r1 = {
+                    x1: this.posX - 100,
+                    y1: this.posY + 45,
+                    x2: this.posX,
+                    y2: this.posY + 45 + 20
+                }
+            }
+            r2 = {
+                x1: other.posX,
+                y1: other.posY,
+                x2: other.posX + other.width,
+                y2: other.posY + other.height
+            }
+            if(this.isCollision(r1, r2)){
+                other.isAttackedStatus()
+            }
+        }
+
+    }
+
     updateMove(){
         // console.log( this.ctx.canvas.width)
         this.vy += this.gravity;
@@ -112,10 +171,14 @@ class Player extends GameObject{
         this.updateControl();
         this.updateMove();
         this.updateDirection();
+        this.updateAttack();
         this.render();
     }
 
     updateDirection(){
+        if(this.status === 6){
+            return;
+        }
         let me = this, other = this.root.players[1 - me.id];
         if(me && other){
             if(me.posX < other.posX){
@@ -128,6 +191,16 @@ class Player extends GameObject{
     }
 
     render(){
+        // this.ctx.fillStyle = this.color;
+        // this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+        // if(this.direction > 0){
+        //     this.ctx.fillStyle = "green";
+        //     this.ctx.fillRect(this.posX + this.width, this.posY + 45, 100, 20)
+        // }
+        // else{
+        //     this.ctx.fillStyle = "green";
+        //     this.ctx.fillRect(this.posX, this.posY + 45, -100, 20)
+        // }
         if(this.status === 1 && this.direction * this.vx < 0){
             this.status = 2;
         }
@@ -150,9 +223,14 @@ class Player extends GameObject{
                 this.ctx.drawImage(image,this.posX, this.posY + obj.offsetY, image.width * obj.scale, image.height * obj.scale);
                 this.ctx.restore();
             }
-            if(this.status === 4){
+            if(this.status === 4 || this.status === 5 || this.status === 6){
                 if(this.frameCurrentCnt === obj.frameRate * (obj.gif.frames.length - 1)){
-                    this.status = 0;
+                    if(this.status === 6){
+                        return ;    
+                    }
+                    else{
+                        this.status = 0;
+                    }
                 }
             }
         }

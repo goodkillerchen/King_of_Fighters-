@@ -8,16 +8,18 @@ class KOF {
             id: 0,
             posX: 200,
             posY: 400,
-            width: 100,
-            height: 200,
-            direction: 1
+            width: 125,
+            height: 210,
+            direction: 1,
+            color: 'blue'
         }),new Kyo(this, {
             id: 1,
-            posX: 1280-300,
+            posX: 1280-320,
             posY: 400,
-            width: 100,
-            height: 200,
-            direction: -1
+            width: 125,
+            height: 210,
+            direction: -1,
+            color: 'red'
         })];
     };
 
