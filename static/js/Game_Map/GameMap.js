@@ -20,7 +20,8 @@ export class GameMap extends GameObject{
     }
 
     render(){
-        this.ctx.fillStyle = 'green';
-        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        // this.ctx.fillStyle = 'green';
+        // this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     }
 }

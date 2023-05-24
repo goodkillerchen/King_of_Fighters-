@@ -24,21 +24,25 @@ class Player extends GameObject{
 
         this.gravity = 100;
 
+        this.animation = new Map();
+
         this.ctx = this.root.gameMap.ctx;
         this.pressedKeys = this.root.gameMap.controller.controller_li;
+
+        this.frameCurrentCnt = 0;
     }
     start(){
 
     }
     updateMove(){
-        console.log( this.ctx.canvas.width)
+        // console.log( this.ctx.canvas.width)
         this.vy += this.gravity;
         this.posY += this.vy * this.timeDelta/1000;
         this.posX += this.vx * this.timeDelta/1000;
-        if(this.posY > 500){
-            this.posY = 500;
+        if(this.posY > 400){
+            this.posY = 400;
             this.vy = 0;
-            if(this.status == 3){
+            if(this.status === 3){
                 this.status = 0;
             }
         }
@@ -66,7 +70,12 @@ class Player extends GameObject{
             space = this.pressedKeys.has('Enter');
         }
         if(this.status === 0 || this.status === 1 || this.status === 2 ){
-            if(w){
+            if(space){
+                this.status = 4;
+                this.frameCurrentCnt = 0;
+                this.vx = 0;
+            }
+            else if(w){
                 if(d){
                     this.vx = this.v_X;
                     this.vy = this.v_Y;
@@ -80,16 +89,15 @@ class Player extends GameObject{
                     this.vy = this.v_Y
                 }
                 this.status = 3;
+                this.frameCurrentCnt = 0;       
             }
             else if(a){
                 this.vx = -this.v_X;
-                this.vy = 0;
-                this.status = 1;
+                this.status = 2;
             }
             else if(d){
                 this.vx = this.v_X;
-                this.vy = 0;
-                this.status = 2;
+                this.status = 1;
             }
             else{
                 this.vx = 0;
@@ -100,14 +108,27 @@ class Player extends GameObject{
     }
 
     update(){
-        this.updateMove();
         this.updateControl();
+        this.updateMove();
         
         this.render();
     }
     render(){
-        this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(this.posX, this.posY, this.width, this.height)
+        let obj = this.animation.get(this.status);
+        // console.log(obj);
+        if(obj && obj.loaded){
+            // console.log(obj.gif.frames.length)
+            
+            let k = parseInt(this.frameCurrentCnt / obj.frameRate) % obj.gif.frames.length;
+            let image = obj.gif.frames[k].image;
+            this.ctx.drawImage(image,this.posX, this.posY + obj.offsetY, image.width * obj.scale, image.height * obj.scale);
+            if(this.status === 4){
+                if(this.frameCurrentCnt === obj.frameRate * (obj.gif.frames.length - 1)){
+                    this.status = 0;
+                }
+            }
+        }
+        this.frameCurrentCnt++;
     }
 }
 
