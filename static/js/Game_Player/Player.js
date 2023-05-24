@@ -37,6 +37,9 @@ class Player extends GameObject{
         this.$hp = eval(`this.root.$hp${this.id}`);
         this.$hp_div = eval(`this.root.$hp${this.id}_div`);
 
+        this.koImage = new Image(342 * 2, 192 * 2);
+        this.koImage.src = "/static/images/others/ko.png";
+
     }
     start(){
 
@@ -54,6 +57,8 @@ class Player extends GameObject{
 
     isAttackedStatus(){
         if(this.status === 6){
+            this.ctx.drawImage(this.koImage, this.ctx.canvas.width/2 - 342, this.ctx.canvas.height/2 - 192, 
+                342 * 2, 192 * 2);
             return; 
         }
         this.status = 5;
@@ -184,6 +189,9 @@ class Player extends GameObject{
 
     updateDirection(){
         if(this.status === 6){
+            this.ctx.drawImage(this.koImage, this.ctx.canvas.width/2 - 342, this.ctx.canvas.height/2 - 192, 
+                342 * 2, 192 * 2);
+            
             return;
         }
         let me = this, other = this.root.players[1 - me.id];
@@ -233,7 +241,9 @@ class Player extends GameObject{
             if(this.status === 4 || this.status === 5 || this.status === 6){
                 if(this.frameCurrentCnt === obj.frameRate * (obj.gif.frames.length - 1)){
                     if(this.status === 6){
-                        return ;    
+                        this.ctx.drawImage(this.koImage, this.ctx.canvas.width/2 - 342, this.ctx.canvas.height/2 - 192, 
+                            342 * 2, 192 * 2);
+                        return;
                     }
                     else{
                         this.status = 0;
@@ -241,6 +251,7 @@ class Player extends GameObject{
                 }
             }
         }
+
         this.frameCurrentCnt++;
     }
 }

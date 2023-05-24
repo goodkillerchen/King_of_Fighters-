@@ -8,8 +8,6 @@ class KOF {
         this.$hp0_div = this.$hp0.find("div");
         this.$hp1 = this.$kof.find("#kof-hp-p1 > div");
         this.$hp1_div = this.$hp1.find("div");
-        this.$duration = this.$kof.find('#kof-timer');
-        this.timer = startTimer(parseInt(this.$duration.text()), this.$duration)
         this.gameMap = new GameMap(this);
         this.players = [new Kyo(this, {
             id: 0,
@@ -28,6 +26,8 @@ class KOF {
             direction: -1,
             color: 'red'
         })];
+        this.$duration = this.$kof.find('#kof-timer');
+        this.timer = startTimer(parseInt(this.$duration.text()), this.$duration);
     };
 
 }
