@@ -27,7 +27,7 @@ class KOF {
             color: 'red'
         })];
         this.$duration = this.$kof.find('#kof-timer');
-        this.timer = startTimer(parseInt(this.$duration.text()), this.$duration);
+        startTimer(parseInt(this.$duration.text()), this.$duration, this);
     };
 
 }

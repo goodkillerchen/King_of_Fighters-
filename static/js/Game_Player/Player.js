@@ -45,6 +45,16 @@ class Player extends GameObject{
 
     }
 
+    end() {
+        if(this.status === 6){
+            this.ctx.drawImage(this.koImage, this.ctx.canvas.width/2 - 342, this.ctx.canvas.height/2 - 192, 
+                    342 * 2, 192 * 2);
+        }
+        return;
+       
+
+    }
+
     isCollision(blockA, blockB){
         if(Math.max(blockA.x1, blockB.x1) > Math.min(blockA.x2, blockB.x2)){
             return false;
@@ -57,17 +67,16 @@ class Player extends GameObject{
 
     isAttackedStatus(){
         if(this.status === 6){
-            this.ctx.drawImage(this.koImage, this.ctx.canvas.width/2 - 342, this.ctx.canvas.height/2 - 192, 
-                342 * 2, 192 * 2);
-            return; 
+            // this.end();
+            return;
         }
         this.status = 5;
         this.frameCurrentCnt = 0;
         this.hp = Math.max(this.hp - 20, 0);
-        console.log(this.$hp)
+        // console.log(this.$hp)
         this.$hp_div.animate({width: this.$hp.parent().width() * this.hp / 100}, 200);
         this.$hp.animate({width: this.$hp.parent().width() * this.hp / 100}, 500)
-        console.log(this.hp)
+        // console.log(this.hp)
         if(this.hp <= 0){
             this.status = 6;  
         }
@@ -178,20 +187,26 @@ class Player extends GameObject{
             }
         }
     }
-
+    updateTimeup(){
+        if(this.root.$duration.text() === '0'){
+            if(this.hp < this.root.players[1 - this.id].hp){
+                this.hp = 0;
+                this.status = 6;
+            }
+        }
+    }
     update(){
         this.updateControl();
         this.updateMove();
         this.updateDirection();
         this.updateAttack();
+        this.updateTimeup();
         this.render();
     }
 
     updateDirection(){
         if(this.status === 6){
-            this.ctx.drawImage(this.koImage, this.ctx.canvas.width/2 - 342, this.ctx.canvas.height/2 - 192, 
-                342 * 2, 192 * 2);
-            
+            this.end();
             return;
         }
         let me = this, other = this.root.players[1 - me.id];
@@ -239,11 +254,12 @@ class Player extends GameObject{
                 this.ctx.restore();
             }
             if(this.status === 4 || this.status === 5 || this.status === 6){
+                console.log(this.frameCurrentCnt, this.status)
                 if(this.frameCurrentCnt === obj.frameRate * (obj.gif.frames.length - 1)){
+                    // console.log(this.status);
                     if(this.status === 6){
-                        this.ctx.drawImage(this.koImage, this.ctx.canvas.width/2 - 342, this.ctx.canvas.height/2 - 192, 
-                            342 * 2, 192 * 2);
-                        return;
+                        this.end();
+                        return ;
                     }
                     else{
                         this.status = 0;
