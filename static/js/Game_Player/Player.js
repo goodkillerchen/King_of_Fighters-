@@ -33,6 +33,10 @@ class Player extends GameObject{
         this.frameCurrentCnt = 0;
 
         this.hp = 100;
+
+        this.$hp = eval(`this.root.$hp${this.id}`);
+        this.$hp_div = eval(`this.root.$hp${this.id}_div`);
+
     }
     start(){
 
@@ -55,6 +59,9 @@ class Player extends GameObject{
         this.status = 5;
         this.frameCurrentCnt = 0;
         this.hp = Math.max(this.hp - 20, 0);
+        console.log(this.$hp)
+        this.$hp_div.animate({width: this.$hp.parent().width() * this.hp / 100}, 200);
+        this.$hp.animate({width: this.$hp.parent().width() * this.hp / 100}, 500)
         console.log(this.hp)
         if(this.hp <= 0){
             this.status = 6;  

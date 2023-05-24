@@ -4,4 +4,68 @@
     background-image: url('../images/backgourd/0.gif');
     background-size: 200% 100%;
     background-position: center;
+    position: absolute;
+}
+
+#kof > #kof-header {
+    width: 100%;
+    height: 80px;
+    position: absolute;
+    display: flex; 
+    align-items: center;
+}
+
+#kof > #kof-header > #kof-hp-p0 {
+    width: calc(50% - 60px);
+    height: 40px;
+    box-sizing: border-box;
+    border: solid white 5px;
+    border-right: none;
+    margin-left: 20px;
+}
+
+#kof > #kof-header > #kof-timer {
+    width: 10%;
+    height: 72px;
+    background-color: orange;
+    border: white 3px solid;
+    font-size: 30px;
+    text-align: center;
+    line-height: 72px;
+    user-select: none;
+}
+
+#kof > #kof-header > #kof-hp-p1 {
+    width: calc(50% - 60px);
+    height: 40px;
+    box-sizing: border-box;
+    border: solid white 5px;
+    border-left: none;
+    margin-right: 20px;
+}
+
+#kof > #kof-header > #kof-hp-p0 > div {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    float: right;   
+}
+
+#kof > #kof-header > #kof-hp-p1 > div {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+}
+
+#kof > #kof-header > #kof-hp-p0 > div > div{
+    width: 100%;
+    height: 100%;
+    background-color: lightgreen;
+    float: right;   
+}
+
+#kof > #kof-header > #kof-hp-p1 > div > div{
+    width: 100%;
+    height: 100%;
+    background-color: lightgreen;
 }
