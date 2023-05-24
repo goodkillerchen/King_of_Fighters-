@@ -11,11 +11,12 @@ class Player extends GameObject{
         this.width = info.width;
         this.height = info.height;
         this.color = info.color;
+        this.direction = info.direction;
 
         this.vx = 0;
         this.vy = 0;
 
-        this.direction = 1;
+        
 
         this.status = 0;
         
@@ -110,18 +111,45 @@ class Player extends GameObject{
     update(){
         this.updateControl();
         this.updateMove();
-        
+        this.updateDirection();
         this.render();
     }
+
+    updateDirection(){
+        let me = this, other = this.root.players[1 - me.id];
+        if(me && other){
+            if(me.posX < other.posX){
+                me.direction = 1;
+            }
+            else{
+                me.direction = -1;
+            }
+        }
+    }
+
     render(){
+        if(this.status === 1 && this.direction * this.vx < 0){
+            this.status = 2;
+        }
+        if(this.status === 2 && this.direction * this.vx > 0){
+            this.status = 1;
+        }
         let obj = this.animation.get(this.status);
         // console.log(obj);
         if(obj && obj.loaded){
             // console.log(obj.gif.frames.length)
-            
             let k = parseInt(this.frameCurrentCnt / obj.frameRate) % obj.gif.frames.length;
             let image = obj.gif.frames[k].image;
-            this.ctx.drawImage(image,this.posX, this.posY + obj.offsetY, image.width * obj.scale, image.height * obj.scale);
+            if(this.direction === 1){
+                this.ctx.drawImage(image,this.posX, this.posY + obj.offsetY, image.width * obj.scale, image.height * obj.scale);
+            }
+            else{
+                this.ctx.save();
+                this.ctx.translate(2 * (this.posX + this.width) - this.width, 0);
+                this.ctx.scale(-1, 1);
+                this.ctx.drawImage(image,this.posX, this.posY + obj.offsetY, image.width * obj.scale, image.height * obj.scale);
+                this.ctx.restore();
+            }
             if(this.status === 4){
                 if(this.frameCurrentCnt === obj.frameRate * (obj.gif.frames.length - 1)){
                     this.status = 0;
